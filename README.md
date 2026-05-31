@@ -62,6 +62,27 @@ NEWGPA_LANG=en cargo run
 
 ## AppImage
 
+The repository includes a public x86_64 AppImage build:
+
+```text
+appimage/NewGPA-x86_64.AppImage
+appimage/NewGPA-x86_64.AppImage.sha256
+```
+
+Run it:
+
+```bash
+chmod +x appimage/NewGPA-x86_64.AppImage
+./appimage/NewGPA-x86_64.AppImage
+```
+
+Verify it:
+
+```bash
+cd appimage
+sha256sum -c NewGPA-x86_64.AppImage.sha256
+```
+
 Install local AppImage tools if needed:
 
 ```bash
@@ -79,6 +100,15 @@ Expected output:
 ```text
 dist/NewGPA-x86_64.AppImage
 dist/NewGPA-x86_64.AppImage.sha256
+```
+
+To refresh the public copy after a build:
+
+```bash
+mkdir -p appimage
+cp dist/NewGPA-x86_64.AppImage appimage/NewGPA-x86_64.AppImage
+cd appimage
+sha256sum NewGPA-x86_64.AppImage > NewGPA-x86_64.AppImage.sha256
 ```
 
 Smoke test:
