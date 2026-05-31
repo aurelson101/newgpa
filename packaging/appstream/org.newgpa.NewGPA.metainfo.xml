@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.newgpa.NewGPA</id>
+  <name>NewGPA</name>
+  <summary>Modern OpenPGP and S/MIME privacy assistant</summary>
+  <summary xml:lang="fr">Assistant moderne pour OpenPGP et S/MIME</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <developer id="org.newgpa">
+    <name>NewGPA contributors</name>
+  </developer>
+  <description>
+    <p>NewGPA is a portable Linux application inspired by GPA and Kleopatra for key management, encryption, decryption, signing, verification, certificates, and secure local workflows.</p>
+    <p xml:lang="fr">NewGPA est une application Linux portable inspirée de GPA et Kleopatra pour gérer les clés, le chiffrement, le déchiffrement, les signatures, les certificats et les usages locaux sécurisés.</p>
+    <p>The Post-Quantum Lab is experimental and disabled by default. It is not standard OpenPGP compatibility.</p>
+    <p xml:lang="fr">Le Post-Quantum Lab est expérimental et désactivé par défaut. Il ne correspond pas à une compatibilité OpenPGP standard.</p>
+  </description>
+  <launchable type="desktop-id">org.newgpa.NewGPA.desktop</launchable>
+  <url type="homepage">https://github.com/aurel/newgpa</url>
+  <content_rating type="oars-1.1" />
+  <provides>
+    <binary>newgpa</binary>
+  </provides>
+</component>

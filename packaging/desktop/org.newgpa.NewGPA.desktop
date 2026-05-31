@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=NewGPA
+GenericName=Privacy Assistant
+GenericName[fr]=Assistant de confidentialité
+Comment=Manage OpenPGP and S/MIME encryption, signatures, certificates, and secure files
+Comment[fr]=Gérer le chiffrement OpenPGP et S/MIME, les signatures, les certificats et les fichiers sécurisés
+Exec=newgpa %U
+Icon=org.newgpa.NewGPA
+Terminal=false
+Categories=System;Security;GTK;
+MimeType=application/pgp-encrypted;application/pgp-signature;application/pkcs7-mime;application/pkcs10;
+StartupNotify=true
