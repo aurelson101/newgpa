@@ -20,10 +20,8 @@ chmod +x NewGPA-x86_64.AppImage
 sha256sum -c NewGPA-x86_64.AppImage.sha256
 ```
 
-## French UI / English UI
+## Language
 
-French is the default interface. To launch the English interface:
+NewGPA detects the system language at startup. French locales use French, and all other locales use English by default.
 
-```bash
-NEWGPA_LANG=en ./NewGPA-x86_64.AppImage
-```
+Use the language button in the top-left corner to switch between French and English.

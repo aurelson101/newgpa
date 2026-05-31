@@ -14,7 +14,7 @@ The application delegates real cryptography to standard Linux security tools: Gn
 - Key server actions for WKD lookup, HKP/HKPS search, receive, send, and refresh.
 - Secure local vault helper using Unix `0700` folders and symmetric GnuPG archives.
 - Post-Quantum Lab status page. This is intentionally experimental and not advertised as OpenPGP-compatible quantum encryption.
-- French UI by default, with an English UI available through `NEWGPA_LANG=en newgpa`.
+- System language detection at startup: French locales use French, all other locales use English by default. A language button in the top-left corner switches between French and English.
 
 ## Fonctionnalités
 
@@ -26,7 +26,7 @@ The application delegates real cryptography to standard Linux security tools: Gn
 - Recherche WKD et serveurs de clés HKP/HKPS.
 - Coffre local simple avec permissions Unix `0700` et archive symétrique GnuPG.
 - Laboratoire post-quantique séparé, expérimental et désactivé par défaut.
-- Interface française par défaut, interface anglaise avec `NEWGPA_LANG=en newgpa`.
+- Détection de la langue système au démarrage : les locales françaises utilisent le français, toutes les autres utilisent l'anglais par défaut. Un bouton de langue en haut à gauche permet de basculer entre français et anglais.
 
 ## Build On Ubuntu 26.04
 
@@ -54,11 +54,7 @@ Launch the GUI:
 cargo run
 ```
 
-Launch the English UI:
-
-```bash
-NEWGPA_LANG=en cargo run
-```
+The UI detects the system language at startup. Use the language button in the top-left corner to switch between French and English.
 
 ## AppImage
 

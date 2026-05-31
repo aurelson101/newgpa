@@ -8,10 +8,14 @@ use std::{
     path::Path,
     process::{Command, Stdio},
     rc::Rc,
+    sync::atomic::{AtomicBool, Ordering},
 };
+
+static ENGLISH_UI: AtomicBool = AtomicBool::new(true);
 
 pub fn run() -> Result<()> {
     adw::init()?;
+    ENGLISH_UI.store(default_english_ui(), Ordering::Relaxed);
     let app = adw::Application::builder()
         .application_id("org.newgpa.NewGPA")
         .build();
@@ -21,7 +25,22 @@ pub fn run() -> Result<()> {
 }
 
 fn build_ui(app: &adw::Application) {
+    let window = adw::ApplicationWindow::builder()
+        .application(app)
+        .title("NewGPA")
+        .default_width(1260)
+        .default_height(820)
+        .build();
+    set_window_content(&window);
+    window.present();
+}
+
+fn set_window_content(window: &adw::ApplicationWindow) {
     let header = adw::HeaderBar::new();
+    let language = button(language_button_label());
+    language.set_tooltip_text(Some(tr("Changer de langue", "Change Language")));
+    header.pack_start(&language);
+
     let title = gtk4::Label::new(Some("NewGPA"));
     title.add_css_class("title-1");
     header.set_title_widget(Some(&title));
@@ -84,14 +103,15 @@ fn build_ui(app: &adw::Application) {
     root.append(&header);
     root.append(&content);
 
-    let window = adw::ApplicationWindow::builder()
-        .application(app)
-        .title("NewGPA")
-        .default_width(1260)
-        .default_height(820)
-        .content(&root)
-        .build();
-    window.present();
+    {
+        let window = window.clone();
+        language.connect_clicked(move |_| {
+            ENGLISH_UI.fetch_xor(true, Ordering::Relaxed);
+            set_window_content(&window);
+        });
+    }
+
+    window.set_content(Some(&root));
 }
 
 fn keys_page() -> gtk4::ScrolledWindow {
@@ -909,8 +929,8 @@ fn settings_page() -> gtk4::ScrolledWindow {
     connect_output(&doctor, &output, &status, || {
         let mut text = String::from(
             tr(
-                "NewGPA doctor\nHigh Security: activé\nRéseau automatique: désactivé\nLangue: NEWGPA_LANG=en pour l'anglais\n\n",
-                "NewGPA doctor\nHigh Security: enabled\nAutomatic network: disabled\nLanguage: set NEWGPA_LANG=fr for French\n\n",
+                "NewGPA doctor\nHigh Security: activé\nRéseau automatique: désactivé\nLangue: français détecté ou choisi dans l'interface\n\n",
+                "NewGPA doctor\nHigh Security: enabled\nAutomatic network: disabled\nLanguage: English detected or selected in the interface\n\n",
             ),
         );
         for tool in [
@@ -1586,10 +1606,37 @@ fn tr(fr: &'static str, en: &'static str) -> &'static str {
 }
 
 fn english_ui() -> bool {
-    env::var("NEWGPA_LANG")
-        .or_else(|_| env::var("LANG"))
-        .map(|value| value.to_ascii_lowercase().starts_with("en"))
+    ENGLISH_UI.load(Ordering::Relaxed)
+}
+
+fn default_english_ui() -> bool {
+    !system_locale()
+        .map(|value| value.to_ascii_lowercase().starts_with("fr"))
         .unwrap_or(false)
+}
+
+fn system_locale() -> Option<String> {
+    env::var("LC_ALL")
+        .ok()
+        .filter(|value| !value.trim().is_empty())
+        .or_else(|| {
+            env::var("LC_MESSAGES")
+                .ok()
+                .filter(|value| !value.trim().is_empty())
+        })
+        .or_else(|| {
+            env::var("LANG")
+                .ok()
+                .filter(|value| !value.trim().is_empty())
+        })
+}
+
+fn language_button_label() -> &'static str {
+    if english_ui() {
+        "Français"
+    } else {
+        "English"
+    }
 }
 
 #[cfg(test)]
